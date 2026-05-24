@@ -1,0 +1,70 @@
+{
+  "generated": "2026-05-24",
+  "years_fetched": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "cutoff_date": "2016-01-01",
+  "source": "https://www.lotto.net (year archives)",
+  "games": {
+    "superlotto_plus": {
+      "file": "superlotto_plus.json",
+      "draw_count": 1085,
+      "oldest": "2016-01-02",
+      "newest": "2026-05-23",
+      "analysis_period": {
+        "start": "2016-01-02",
+        "end": "2026-05-23",
+        "label": "2016-01-02 to 2026-05-23"
+      }
+    },
+    "fantasy5": {
+      "file": "fantasy5.json",
+      "draw_count": 231,
+      "oldest": "2025-10-05",
+      "newest": "2026-05-23",
+      "analysis_period": {
+        "start": "2016-01-02",
+        "end": "2026-05-23",
+        "label": "2016-01-02 to 2026-05-23"
+      }
+    },
+    "powerball": {
+      "file": "powerball.json",
+      "draw_count": 1333,
+      "oldest": "2016-01-02",
+      "newest": "2026-05-23",
+      "analysis_period": {
+        "start": "2016-01-02",
+        "end": "2026-05-23",
+        "label": "2016-01-02 to 2026-05-23"
+      }
+    },
+    "mega_millions": {
+      "file": "mega_millions.json",
+      "draw_count": 1024,
+      "oldest": "2016-01-05",
+      "newest": "2026-05-22",
+      "analysis_period": {
+        "start": "2016-01-02",
+        "end": "2026-05-23",
+        "label": "2016-01-02 to 2026-05-23"
+      }
+    }
+  },
+  "drawanalytics_sync": "2026-05-24",
+  "analysis_period": {
+    "start": "2016-01-02",
+    "end": "2026-05-23",
+    "label": "2016-01-02 to 2026-05-23"
+  }
+}
