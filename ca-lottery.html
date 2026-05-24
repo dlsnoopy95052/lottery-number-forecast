@@ -119,6 +119,63 @@
       line-height: 1.45;
     }
 
+    .jackpot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 560px) {
+      .jackpot-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .jackpot-card {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 0.55rem 0.5rem;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .jackpot-card.active {
+      border-color: #f5a623;
+      background: rgba(245, 166, 35, 0.12);
+    }
+
+    .jackpot-card .jp-game {
+      font-size: 0.68rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 0.2rem;
+      line-height: 1.2;
+    }
+
+    .jackpot-card .jp-amount {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #f5a623;
+      line-height: 1.2;
+    }
+
+    .jackpot-card .jp-meta {
+      font-size: 0.65rem;
+      color: #777;
+      margin-top: 0.25rem;
+    }
+
+    .jackpot-loading {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #888;
+      font-size: 0.85rem;
+      padding: 0.5rem;
+    }
+
     .meta {
       font-size: 0.85rem;
       color: #bbb;
@@ -266,6 +323,7 @@
     <div class="panel">
       <label id="game-tabs-label">Game</label>
       <div class="game-tabs" id="game-tabs" role="tablist" aria-labelledby="game-tabs-label"></div>
+      <div class="jackpot-grid" id="jackpot-grid" aria-live="polite"></div>
       <div class="period-banner" id="period-banner"></div>
       <div class="meta" id="meta"></div>
       <div class="warn" id="coverage-warn" hidden></div>
@@ -306,10 +364,12 @@
       <code>python scripts/fetch_missing_games.py</code>,
       <code>python scripts/fetch_drawanalytics.py</code> (Fantasy 5),
       then <code>python scripts/build_summary.py</code>.
+      Jackpots: <code>python scripts/fetch_jackpots.py</code> (or loaded live when online).
     </footer>
   </div>
 
   <script src="data/lottery-summary.js"></script>
+  <script src="data/jackpots.js"></script>
   <script>
     const STRATEGY_DESC = {
       balanced: 'Mix of frequently and rarely drawn numbers (2 hot, 2 cold, 1 mid).',
@@ -321,8 +381,11 @@
     let summary = window.LOTTERY_SUMMARY;
     let strategy = 'balanced';
 
+    const JACKPOT_API = 'https://www.drawanalytics.com/api/v1/california';
     const gameTabsEl = document.getElementById('game-tabs');
+    const jackpotGrid = document.getElementById('jackpot-grid');
     let activeGameId = 'superlotto_plus';
+    let jackpots = {};
 
     const GAME_TABS = [
       { id: 'superlotto_plus', label: 'SuperLotto Plus' },
@@ -498,6 +561,73 @@
       return (g.draw_count * g.main_count) / (max - min + 1);
     }
 
+    function formatJackpot(amount, gameId) {
+      if (amount == null || Number.isNaN(amount)) return '—';
+      const n = Number(amount);
+      if (gameId === 'fantasy5' || n < 1_000_000) {
+        return '$' + n.toLocaleString('en-US');
+      }
+      if (n >= 1_000_000_000) {
+        const b = n / 1_000_000_000;
+        return '$' + (b >= 10 ? b.toFixed(0) : b.toFixed(2).replace(/\.?0+$/, '')) + ' Billion';
+      }
+      return '$' + Math.round(n / 1_000_000).toLocaleString('en-US') + ' Million';
+    }
+
+    function renderJackpotGrid() {
+      if (!jackpotGrid) return;
+      const entries = GAME_TABS.filter(({ id }) => summary.games[id]);
+      if (!entries.length) {
+        jackpotGrid.innerHTML = '';
+        return;
+      }
+      jackpotGrid.innerHTML = entries
+        .map(({ id, label }) => {
+          const j = jackpots[id];
+          const amount = j?.jackpot ?? j?.jackpot_amount;
+          const date = j?.draw_date;
+          const err = j?.error && !amount;
+          return `
+            <div class="jackpot-card${id === activeGameId ? ' active' : ''}" data-game="${id}">
+              <div class="jp-game">${label}</div>
+              <div class="jp-amount">${err ? '—' : formatJackpot(amount, id)}</div>
+              <div class="jp-meta">${date ? `Last draw ${date}` : 'Updating…'}</div>
+            </div>`;
+        })
+        .join('');
+    }
+
+    async function refreshJackpots() {
+      if (jackpotGrid) {
+        jackpotGrid.innerHTML = '<div class="jackpot-loading">Loading current jackpots…</div>';
+      }
+      const fallback = window.LOTTERY_JACKPOTS?.games || {};
+      const next = {};
+      await Promise.all(
+        GAME_TABS.map(async ({ id }) => {
+          try {
+            const res = await fetch(`${JACKPOT_API}/${id}/latest`);
+            if (!res.ok) throw new Error(res.statusText);
+            const json = await res.json();
+            next[id] = json.data;
+          } catch {
+            const fb = fallback[id];
+            if (fb && !fb.error) {
+              next[id] = {
+                jackpot: fb.jackpot,
+                draw_date: fb.draw_date,
+                draw_number: fb.draw_number,
+              };
+            } else {
+              next[id] = { error: true };
+            }
+          }
+        }),
+      );
+      jackpots = next;
+      renderJackpotGrid();
+    }
+
     function renderPeriodBanner() {
       const p = summary.analysis_period;
       if (!p) return;
@@ -564,6 +694,7 @@
         btn.classList.toggle('active', on);
         btn.setAttribute('aria-selected', on ? 'true' : 'false');
       });
+      renderJackpotGrid();
       refreshUI();
     }
 
@@ -589,6 +720,7 @@
       .then(() => {
         initGameTabs();
         refreshUI();
+        refreshJackpots();
       })
       .catch((err) => {
         document.querySelector('.wrap').innerHTML =
