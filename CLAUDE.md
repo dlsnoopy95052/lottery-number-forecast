@@ -84,5 +84,5 @@ All logic is inline JavaScript. Key entry points:
 ### Remotes
 
 - `origin` → GitHub (`https://github.com/dlsnoopy95052/proj1.git`)
-- `lotto` → local Gitea (`http://192.168.168.166:3000/snoopy/lotto-numbers.git`)
+- `lotto` → local Gitea (internal network only)
 - `lottery` → GitHub (`https://github.com/dlsnoopy95052/lottery-number-forecast.git`)
