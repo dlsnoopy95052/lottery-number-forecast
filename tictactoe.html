@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tic Tac Toe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -16,8 +19,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #160c02, #2a1a06, #1c1308);
+      font-family: 'Sora', 'Segoe UI', sans-serif;
       color: #fff;
     }
 
@@ -31,7 +34,7 @@
       font-weight: 800;
       letter-spacing: 4px;
       margin-bottom: 0.4rem;
-      background: linear-gradient(90deg, #f093fb, #f5a623, #4facfe);
+      background: linear-gradient(90deg, #fbbf24, #f97316, #ea580c);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -69,9 +72,9 @@
     }
 
     .score-label {
-      font-size: 0.7rem;
+      font-size: 0.82rem;
       color: #aaa;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
     }
 
@@ -80,9 +83,9 @@
       font-weight: 700;
     }
 
-    .score-card:nth-child(1) .score-value { color: #f093fb; }
+    .score-card:nth-child(1) .score-value { color: #fb923c; }
     .score-card:nth-child(2) .score-value { color: #aaa; }
-    .score-card:nth-child(3) .score-value { color: #4facfe; }
+    .score-card:nth-child(3) .score-value { color: #fbbf24; }
 
     /* Status */
     .status {
@@ -131,13 +134,13 @@
     }
 
     .cell.x {
-      color: #f093fb;
-      text-shadow: 0 0 20px rgba(240,147,251,0.6);
+      color: #fb923c;
+      text-shadow: 0 0 20px rgba(251,146,60,0.6);
     }
 
     .cell.o {
-      color: #4facfe;
-      text-shadow: 0 0 20px rgba(79,172,254,0.6);
+      color: #fbbf24;
+      text-shadow: 0 0 20px rgba(251,191,36,0.6);
     }
 
     .cell.winning {
@@ -178,7 +181,7 @@
     button:active { transform: scale(0.97); }
 
     .btn-restart {
-      background: linear-gradient(90deg, #f093fb, #f5a623);
+      background: linear-gradient(90deg, #f59e0b, #ea580c);
       color: #fff;
     }
 
@@ -230,7 +233,7 @@
     }
 
     .toggle-switch input:checked + .toggle-slider {
-      background: linear-gradient(90deg, #f093fb, #4facfe);
+      background: linear-gradient(90deg, #f59e0b, #fb923c);
     }
 
     .toggle-switch input:checked + .toggle-slider::before {

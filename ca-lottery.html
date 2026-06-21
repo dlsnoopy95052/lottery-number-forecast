@@ -4,13 +4,104 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CA Lottery Number Suggestions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+      --bg1: #160c02; --bg2: #2a1a06; --bg3: #1c1308;
+      --accent-hi: #fbbf24;
+      --accent: #f5a623;
+      --accent2: #d97706;
+      --accent3: #92400e;
+      --accent-rgb: 245 162 35;
+      --accent3-rgb: 146 64 14;
+      --ball1: #667eea; --ball2: #764ba2;
+      --bonus2: #f093fb;
+      --hot: #8f8;
+      --cold: #f8a;
+    }
+    [data-theme="ocean"] {
+      --bg1: #020c16; --bg2: #061a2a; --bg3: #041120;
+      --accent-hi: #7dd3fc;
+      --accent: #0ea5e9;
+      --accent2: #0284c7;
+      --accent3: #075985;
+      --accent-rgb: 14 165 233;
+      --accent3-rgb: 7 89 133;
+      --ball1: #fb923c; --ball2: #ea580c;
+      --bonus2: #a78bfa;
+      --hot: #7dd3fc;
+      --cold: #fb923c;
+    }
+    [data-theme="emerald"] {
+      --bg1: #021408; --bg2: #062814; --bg3: #041a0a;
+      --accent-hi: #6ee7b7;
+      --accent: #10b981;
+      --accent2: #059669;
+      --accent3: #065f46;
+      --accent-rgb: 16 185 129;
+      --accent3-rgb: 6 95 70;
+      --ball1: #a78bfa; --ball2: #7c3aed;
+      --bonus2: #f472b6;
+      --hot: #6ee7b7;
+      --cold: #f472b6;
+    }
+    [data-theme="rose"] {
+      --bg1: #16020a; --bg2: #2a0614; --bg3: #1c030e;
+      --accent-hi: #fda4af;
+      --accent: #f43f5e;
+      --accent2: #e11d48;
+      --accent3: #9f1239;
+      --accent-rgb: 244 63 94;
+      --accent3-rgb: 159 18 57;
+      --ball1: #38bdf8; --ball2: #0369a1;
+      --bonus2: #fb923c;
+      --hot: #fda4af;
+      --cold: #67e8f9;
+    }
+    [data-theme="violet"] {
+      --bg1: #06040f; --bg2: #100c1e; --bg3: #090714;
+      --accent-hi: #c4b5fd;
+      --accent: #8b5cf6;
+      --accent2: #7c3aed;
+      --accent3: #4c1d95;
+      --accent-rgb: 139 92 246;
+      --accent3-rgb: 76 29 149;
+      --ball1: #34d399; --ball2: #059669;
+      --bonus2: #f472b6;
+      --hot: #c4b5fd;
+      --cold: #6ee7b7;
+    }
+
+    .palette-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    .swatch {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .swatch.active, .swatch:hover {
+      border-color: rgba(255,255,255,0.8);
+      transform: scale(1.3);
+    }
+    .label-hot { font-size: 0.8rem; color: var(--hot); }
+    .label-cold { font-size: 0.8rem; color: var(--cold); }
+
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      font-family: 'Sora', 'Segoe UI', sans-serif;
       color: #fff;
       padding: 1.5rem;
     }
@@ -24,7 +115,7 @@
       font-size: 1.75rem;
       font-weight: 800;
       letter-spacing: 2px;
-      background: linear-gradient(90deg, #f093fb, #4facfe);
+      background: linear-gradient(90deg, var(--accent-hi), var(--accent2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -38,12 +129,12 @@
     }
 
     .disclaimer {
-      background: rgba(255, 180, 0, 0.12);
-      border: 1px solid rgba(255, 180, 0, 0.35);
+      background: rgb(var(--accent-rgb) / 0.12);
+      border: 1px solid rgb(var(--accent-rgb) / 0.35);
       border-radius: 8px;
       padding: 0.75rem 1rem;
       font-size: 0.82rem;
-      color: #ffd88a;
+      color: var(--accent-hi);
       margin-bottom: 1.25rem;
       line-height: 1.45;
     }
@@ -98,8 +189,8 @@
     }
 
     .game-tabs button.active {
-      background: linear-gradient(90deg, rgba(102, 126, 234, 0.45), rgba(118, 75, 162, 0.45));
-      border-color: #667eea;
+      background: linear-gradient(90deg, rgb(var(--accent-rgb) / 0.45), rgb(var(--accent3-rgb) / 0.45));
+      border-color: var(--accent2);
       color: #fff;
     }
 
@@ -110,9 +201,9 @@
 
     .period-banner {
       font-size: 0.88rem;
-      color: #cce4ff;
-      background: rgba(79, 172, 254, 0.12);
-      border: 1px solid rgba(79, 172, 254, 0.35);
+      color: var(--accent-hi);
+      background: rgb(var(--accent-rgb) / 0.12);
+      border: 1px solid rgb(var(--accent-rgb) / 0.35);
       border-radius: 8px;
       padding: 0.6rem 0.85rem;
       margin-bottom: 0.85rem;
@@ -142,12 +233,12 @@
     }
 
     .jackpot-card.active {
-      border-color: #f5a623;
-      background: rgba(245, 166, 35, 0.12);
+      border-color: var(--accent);
+      background: rgb(var(--accent-rgb) / 0.12);
     }
 
     .jackpot-card .jp-game {
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       color: #999;
       text-transform: uppercase;
       letter-spacing: 0.4px;
@@ -158,14 +249,20 @@
     .jackpot-card .jp-amount {
       font-size: 1rem;
       font-weight: 800;
-      color: #f5a623;
+      color: var(--accent);
       line-height: 1.2;
     }
 
     .jackpot-card .jp-meta {
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       color: #777;
       margin-top: 0.25rem;
+    }
+
+    .jackpot-card .jp-odds {
+      font-size: 0.72rem;
+      color: #666;
+      margin-top: 0.18rem;
     }
 
     .jackpot-loading {
@@ -210,8 +307,8 @@
 
     .strategy-row button.active,
     .strategy-row button:hover {
-      background: rgba(79, 172, 254, 0.25);
-      border-color: #4facfe;
+      background: rgb(var(--accent-rgb) / 0.25);
+      border-color: var(--accent2);
       color: #fff;
     }
 
@@ -238,12 +335,12 @@
       justify-content: center;
       font-weight: 700;
       font-size: 1.1rem;
-      background: linear-gradient(145deg, #667eea, #764ba2);
+      background: linear-gradient(145deg, var(--ball1), var(--ball2));
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     }
 
     .ball.bonus {
-      background: linear-gradient(145deg, #f5a623, #f093fb);
+      background: linear-gradient(145deg, var(--accent), var(--bonus2));
     }
 
     .plus {
@@ -265,14 +362,14 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      background: linear-gradient(90deg, #667eea, #764ba2);
+      background: linear-gradient(90deg, var(--accent2), var(--accent3));
       color: #fff;
       transition: transform 0.15s, box-shadow 0.15s;
     }
 
     .actions button.primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.45);
+      box-shadow: 0 8px 24px rgb(var(--accent-rgb) / 0.45);
     }
 
     .freq h3 {
@@ -298,13 +395,87 @@
     }
 
     .freq-list span {
-      color: #4facfe;
+      color: var(--accent);
       font-weight: 600;
+    }
+
+    .recent-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .recent-header h3 {
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+
+    .btn-refresh {
+      padding: 0.3rem 0.7rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      background: transparent;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn-refresh:hover {
+      border-color: var(--accent2);
+      color: var(--accent-hi);
+    }
+
+    .btn-refresh.spinning { opacity: 0.5; pointer-events: none; }
+
+    .draw-row {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .draw-date {
+      font-size: 0.72rem;
+      color: #777;
+      width: 4.5rem;
+      flex-shrink: 0;
+    }
+
+    .mini-ball {
+      width: 1.9rem;
+      height: 1.9rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: linear-gradient(145deg, var(--ball1), var(--ball2));
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .mini-ball.bonus {
+      background: linear-gradient(145deg, var(--accent), var(--bonus2));
+    }
+
+    .mini-plus {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .recent-msg {
+      font-size: 0.82rem;
+      color: #888;
+      text-align: center;
+      padding: 0.5rem 0;
     }
 
     footer {
       margin-top: 1.5rem;
-      font-size: 0.75rem;
+      font-size: 0.82rem;
       color: #666;
       line-height: 1.5;
     }
@@ -314,6 +485,14 @@
   <div class="wrap">
     <h1>CA Lottery Suggestions</h1>
     <p class="sub">Number ideas from historical draw frequency (last ~10 years where data is available).</p>
+
+    <div class="palette-row" aria-label="Color theme">
+      <button class="swatch active" data-theme="amber"   title="Amber"   style="background:#f5a623"></button>
+      <button class="swatch"        data-theme="ocean"   title="Ocean"   style="background:#0ea5e9"></button>
+      <button class="swatch"        data-theme="emerald" title="Emerald" style="background:#10b981"></button>
+      <button class="swatch"        data-theme="rose"    title="Rose"    style="background:#f43f5e"></button>
+      <button class="swatch"        data-theme="violet"  title="Violet"  style="background:#8b5cf6"></button>
+    </div>
 
     <div class="disclaimer" role="note">
       <strong>For entertainment only.</strong> Lottery draws are random; past results do not predict future outcomes.
@@ -327,6 +506,14 @@
       <div class="period-banner" id="period-banner"></div>
       <div class="meta" id="meta"></div>
       <div class="warn" id="coverage-warn" hidden></div>
+    </div>
+
+    <div class="panel">
+      <div class="recent-header">
+        <h3>Recent Draws</h3>
+        <button class="btn-refresh" id="btn-refresh" type="button">↻ Refresh</button>
+      </div>
+      <div id="recent-draws"><p class="recent-msg">Loading…</p></div>
     </div>
 
     <div class="panel" id="game-panel" aria-labelledby="tab-superlotto_plus">
@@ -348,11 +535,11 @@
       <h3 id="freq-title">Frequency highlights</h3>
       <div class="freq-cols">
         <div>
-          <strong style="font-size:0.8rem;color:#8f8;">Most drawn (main)</strong>
+          <strong class="label-hot">Most drawn (main)</strong>
           <div class="freq-list" id="hot-list"></div>
         </div>
         <div>
-          <strong style="font-size:0.8rem;color:#f8a;">Least drawn (main)</strong>
+          <strong class="label-cold">Least drawn (main)</strong>
           <div class="freq-list" id="cold-list"></div>
         </div>
       </div>
@@ -561,6 +748,31 @@
       return (g.draw_count * g.main_count) / (max - min + 1);
     }
 
+    function combinations(n, k) {
+      if (k > n) return 0;
+      let result = 1;
+      for (let i = 0; i < k; i++) {
+        result = result * (n - i) / (i + 1);
+      }
+      return Math.round(result);
+    }
+
+    function jackpotOdds(g) {
+      const poolSize = g.main_range[1] - g.main_range[0] + 1;
+      let odds = combinations(poolSize, g.main_count);
+      if (g.bonus_range) {
+        odds *= (g.bonus_range[1] - g.bonus_range[0] + 1);
+      }
+      return odds;
+    }
+
+    function formatOdds(n) {
+      if (n >= 1_000_000_000) return '1 in ' + (n / 1_000_000_000).toFixed(0) + 'B';
+      if (n >= 1_000_000) return '1 in ' + (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (n >= 1_000) return '1 in ' + (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+      return '1 in ' + n.toLocaleString('en-US');
+    }
+
     function formatJackpot(amount, gameId) {
       if (amount == null || Number.isNaN(amount)) return '—';
       const n = Number(amount);
@@ -587,11 +799,14 @@
           const amount = j?.jackpot ?? j?.jackpot_amount;
           const date = j?.draw_date;
           const err = j?.error && !amount;
+          const g = summary.games[id];
+          const odds = g ? formatOdds(jackpotOdds(g)) : '';
           return `
             <div class="jackpot-card${id === activeGameId ? ' active' : ''}" data-game="${id}">
               <div class="jp-game">${label}</div>
               <div class="jp-amount">${err ? '—' : formatJackpot(amount, id)}</div>
               <div class="jp-meta">${date ? `Last draw ${date}` : 'Updating…'}</div>
+              ${odds ? `<div class="jp-odds">Jackpot odds: ${odds}</div>` : ''}
             </div>`;
         })
         .join('');
@@ -696,6 +911,7 @@
       });
       renderJackpotGrid();
       refreshUI();
+      loadRecentDraws();
     }
 
     document.getElementById('strategies').addEventListener('click', (e) => {
@@ -716,11 +932,69 @@
       renderPick(suggestNumbers(currentGame(), strategy));
     });
 
+    const recentEl = document.getElementById('recent-draws');
+    const btnRefresh = document.getElementById('btn-refresh');
+
+    function formatDrawDate(str) {
+      const d = new Date(str + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' });
+    }
+
+    function renderRecentDraws(draws) {
+      if (!draws.length) {
+        recentEl.innerHTML = '<p class="recent-msg">No draw data available.</p>';
+        return;
+      }
+      recentEl.innerHTML = draws.map((draw) => {
+        const nums = draw.numbers.map(
+          (n) => `<span class="mini-ball">${n}</span>`
+        ).join('');
+        const bonus = draw.bonus_ball != null
+          ? `<span class="mini-plus">+</span><span class="mini-ball bonus">${draw.bonus_ball}</span>`
+          : '';
+        return `<div class="draw-row">
+          <span class="draw-date">${formatDrawDate(draw.draw_date)}</span>
+          ${nums}${bonus}
+        </div>`;
+      }).join('');
+    }
+
+    async function loadRecentDraws() {
+      btnRefresh.classList.add('spinning');
+      recentEl.innerHTML = '<p class="recent-msg">Fetching live results…</p>';
+      try {
+        const res = await fetch(`${JACKPOT_API}/${activeGameId}/results?limit=5`);
+        if (!res.ok) throw new Error(res.statusText);
+        const json = await res.json();
+        renderRecentDraws(json.data || []);
+      } catch {
+        recentEl.innerHTML = '<p class="recent-msg">Could not load live results. (CORS or network error)</p>';
+      } finally {
+        btnRefresh.classList.remove('spinning');
+      }
+    }
+
+    btnRefresh.addEventListener('click', loadRecentDraws);
+
+    function applyTheme(name) {
+      document.documentElement.dataset.theme = name === 'amber' ? '' : name;
+      document.querySelectorAll('.swatch').forEach((s) =>
+        s.classList.toggle('active', s.dataset.theme === name)
+      );
+      localStorage.setItem('lotto-theme', name);
+    }
+    document.querySelector('.palette-row').addEventListener('click', (e) => {
+      const s = e.target.closest('.swatch[data-theme]');
+      if (s) applyTheme(s.dataset.theme);
+    });
+    applyTheme(localStorage.getItem('lotto-theme') || 'amber');
+
     loadSummary()
       .then(() => {
         initGameTabs();
         refreshUI();
         refreshJackpots();
+        loadRecentDraws();
       })
       .catch((err) => {
         document.querySelector('.wrap').innerHTML =
